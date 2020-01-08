@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    tools:context=".MainActivity">
+
+    <Button
+        style="@style/CustomButton.Cube"
+        android:textColor="@color/button"
+        android:text="@string/test" />
+
+    <View
+        android:layout_width="@dimen/view_size"
+        android:layout_height="@dimen/view_size"
+        android:background="@color/colorPrimary"
+        android:layout_marginTop="12dp"/>
+
+</LinearLayout>
