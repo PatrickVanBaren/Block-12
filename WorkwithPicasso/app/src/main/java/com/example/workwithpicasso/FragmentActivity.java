@@ -7,13 +7,12 @@ import android.widget.ImageView;
 
 public class FragmentActivity extends AppCompatActivity {
 
-    private ImageView mImageView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
-        mImageView = findViewById(R.id.full_screen);
-        mImageView.setImageResource();
+
+        ImageView imageView = findViewById(R.id.full_screen);
+        imageView.setImageResource(getIntent().getIntExtra("image", 0));
     }
 }

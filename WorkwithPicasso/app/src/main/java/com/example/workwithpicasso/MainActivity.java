@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Picasso mPicasso;
     public static int position;
+    String[] mUrlStrings = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         private final LayoutInflater mInflater = LayoutInflater.from(MainActivity.this);
 
-        final String[] mUrlStrings = {
+        String[] mUrlStrings = {
                 "https://upload.wikimedia.org/wikipedia/commons/c/c4/NGC253_Galaxy_from_the_Mount_Lemmon_SkyCenter_Schulman_Telescope_courtesy_Adam_Block.jpg",
                 "https://upload.wikimedia.org/wikipedia/commons/6/68/NGC2276_Galaxy_from_the_Mount_Lemmon_SkyCenter_Schulman_Telescope_courtesy_Adam_Block.jpg",
                 "https://upload.wikimedia.org/wikipedia/commons/e/e5/NGC2403_Galaxy_from_the_Mount_Lemmon_SkyCenter_Schulman_Telescope_courtesy_Adam_Block.jpg",
@@ -91,14 +92,15 @@ public class MainActivity extends AppCompatActivity {
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = findViewById(R.id.view_image);
+            imageView = itemView.findViewById(R.id.view_image);
             imageView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             position = getAdapterPosition();
-            Intent intent = new Intent("android.intent.action.Fragment");
+            Intent intent = new Intent(MainActivity.this, FragmentActivity.class);
+            intent.putExtra("image", mUrlStrings[position]);
             startActivity(intent);
         }
     }
