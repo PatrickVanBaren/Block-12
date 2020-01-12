@@ -10,6 +10,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,8 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity {
 
     private Picasso mPicasso;
-    public static int position;
-    String[] mUrlStrings = null;
+    private static int positions;
+    String[] mUrlStrings = new String[19];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +77,9 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             mPicasso.cancelRequest(holder.imageView);
             holder.imageView.setImageBitmap(null);
+            positions = holder.getAdapterPosition();
             mPicasso.load(mUrlStrings[position]).placeholder(R.drawable.ic_launcher_foreground)
-                    .resizeDimen(150, 150).into(holder.imageView);
+                    .resize(150, 150).into(holder.imageView);
         }
 
         @Override
@@ -86,22 +88,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         final ImageView imageView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.view_image);
-            imageView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            position = getAdapterPosition();
-            Intent intent = new Intent(MainActivity.this, FragmentActivity.class);
-            intent.putExtra("image", mUrlStrings[position]);
-            startActivity(intent);
+            imageView.setOnClickListener(v -> {
+                Intent intent = new Intent(MainActivity.this, FragmentActivity.class);
+                intent.putExtra("image", mUrlStrings[positions]);
+                startActivity(intent);
+            });
         }
     }
 }
