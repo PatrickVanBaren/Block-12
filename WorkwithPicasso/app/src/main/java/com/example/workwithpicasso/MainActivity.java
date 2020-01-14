@@ -20,9 +20,8 @@ import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Picasso mPicasso;
-    private static int positions;
-    String[] mUrlStrings = new String[19];
+    Picasso mPicasso;
+    RecyclerView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +35,16 @@ public class MainActivity extends AppCompatActivity {
                     new String[] {Manifest.permission.INTERNET}, 12345);
         }
 
-        final RecyclerView list = findViewById(R.id.view_list);
+        list = findViewById(R.id.view_list);
         list.setLayoutManager(new GridLayoutManager(this, 2));
         list.setAdapter(new ImagesAdapter());
     }
 
-    public class ImagesAdapter extends RecyclerView.Adapter<ViewHolder> {
+    public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder> {
 
         private final LayoutInflater mInflater = LayoutInflater.from(MainActivity.this);
 
-        String[] mUrlStrings = {
+        final String[] mUrlStrings = {
                 "https://upload.wikimedia.org/wikipedia/commons/c/c4/NGC253_Galaxy_from_the_Mount_Lemmon_SkyCenter_Schulman_Telescope_courtesy_Adam_Block.jpg",
                 "https://upload.wikimedia.org/wikipedia/commons/6/68/NGC2276_Galaxy_from_the_Mount_Lemmon_SkyCenter_Schulman_Telescope_courtesy_Adam_Block.jpg",
                 "https://upload.wikimedia.org/wikipedia/commons/e/e5/NGC2403_Galaxy_from_the_Mount_Lemmon_SkyCenter_Schulman_Telescope_courtesy_Adam_Block.jpg",
@@ -77,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             mPicasso.cancelRequest(holder.imageView);
             holder.imageView.setImageBitmap(null);
-            positions = holder.getAdapterPosition();
             mPicasso.load(mUrlStrings[position]).placeholder(R.drawable.ic_launcher_foreground)
                     .resize(150, 150).into(holder.imageView);
         }
@@ -86,20 +84,20 @@ public class MainActivity extends AppCompatActivity {
         public int getItemCount() {
             return mUrlStrings.length;
         }
-    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
-        final ImageView imageView;
+            public final ImageView imageView;
 
-        ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.view_image);
-            imageView.setOnClickListener(v -> {
-                Intent intent = new Intent(MainActivity.this, FragmentActivity.class);
-                intent.putExtra("image", mUrlStrings[positions]);
-                startActivity(intent);
-            });
+            ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                imageView = itemView.findViewById(R.id.view_image);
+                imageView.setOnClickListener(v -> {
+                    Intent intent = new Intent(MainActivity.this, FragmentActivity.class);
+                    intent.putExtra("image", mUrlStrings[getAdapterPosition()]);
+                    startActivity(intent);
+                });
+            }
         }
     }
 }
